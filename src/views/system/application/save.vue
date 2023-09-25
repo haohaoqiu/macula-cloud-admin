@@ -72,7 +72,7 @@
 				apiObj: this.$API.system_user.user.list,
 				props: {
 					label: 'username',
-					value: 'id',
+					value: 'username',
 					keyword: "keywords"
 				},
 				//表单数据
@@ -171,15 +171,12 @@
 				//Object.assign(this.form, data)
 			},
 			async getUsersByUsernames(data) {
-				var res = {}
-				var params = {
-					usernames: data
+				this.form.manager = []
+				if(!data){
+					return
 				}
-				var res = await this.$API.system_user.user.listByUsernames.get(params);
-				if (res.code === '00000') {
-					this.form.manager = res.data.records
-				} else {
-					ElMessageBox.alert(res.message, "提示", {type: 'error'})
+				for(var i in data.split(",")){
+					this.form.manager.push({username: data.split(",")[i]})
 				}
 			},
 			async validtorCode(rule, value, callback){
